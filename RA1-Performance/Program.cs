@@ -1,9 +1,13 @@
 ﻿
 Console.WriteLine("\n -- Conectividade em Sistemas Ciberfísicos- Mapeamento Direto -- \n");
 
+var hits = 0;
+var misses = 0;
+var counter = 0;
 
 Console.WriteLine("Digite o tamanho da cache: ");
 var cacheSizeFromUser = Console.ReadLine();
+Console.WriteLine("");
 
 while(!IsValidNumber(cacheSizeFromUser))
 {
@@ -14,8 +18,26 @@ while(!IsValidNumber(cacheSizeFromUser))
 
 var valueConvertedFromUser = int.Parse(cacheSizeFromUser);
 
+Console.WriteLine("====================================");
+Console.WriteLine("Cache inicial: ");
 var cache = CreateCache(valueConvertedFromUser);
 PrintCache(cache);
+
+var listNumbers = new List<int> {0, 1, 2, 3, 1, 4, 5, 6}; // remover hard code
+//var listNumbers = new List<int> {33, 3, 11, 5};
+
+DirectMapping(valueConvertedFromUser, listNumbers);
+
+Console.WriteLine("*------------------------------------*");
+Console.WriteLine("Memórias acessadas: " + listNumbers.Count);
+Console.WriteLine("Número de hits: " + hits);
+Console.WriteLine("Número de misses: " + misses);
+var totalAccess = listNumbers.Count;
+var hitRate = (hits * 100) / totalAccess;
+Console.WriteLine("Taxa de acerto (hits): " + hitRate + "%");
+
+
+
 
 
 
@@ -42,21 +64,48 @@ bool IsValidNumber(string? valueFromUser)
 
 void PrintCache(Dictionary<int, int> cache)
 {
+    Console.WriteLine("Cache size: " + cache.Count);
     Console.WriteLine("| Cache position | Memory position |");
     Console.WriteLine("|--------------------------------  |");
-     
-    foreach (var value in cache) 
+
+    foreach (var value in cache)
         Console.WriteLine($"               {value.Key} | {value.Value}");
+
+    Console.WriteLine("====================================");
 }
 
-void DirectMapping(int cacheSize, List<int> memoryPosition)
+Dictionary<int, int> DirectMapping(int cacheSize, List<int> memoryPosition)
 {
     var cache = CreateCache(cacheSize);
-    PrintCache(cache);
+    string status;
 
     foreach (var position in memoryPosition)
     {
+        var cachePosition = position % cacheSize;
+        var value = cache[cachePosition];
+
+        if (value != position)
+        {
+            status = "Miss!";
+            Console.WriteLine("Linha " + counter + " | " + "Posição de memória desejada: " + position);
+            Console.WriteLine("Status: " + status);
+            misses++;
+        }
+        else
+        {
+            status = "Hit!";
+            Console.WriteLine("Linha " + counter + " | " + "Posição de memória desejada: " + position);
+            Console.WriteLine("Status: " + status);
+            hits++;
+        }
         
+        cache[cachePosition] = position;
+
+        counter++;
+
+        PrintCache(cache);
     }
+
+    return cache;
 }
 
