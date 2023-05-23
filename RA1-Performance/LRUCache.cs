@@ -16,9 +16,7 @@ public class LRUCache
             // Exibindo o conjunto atual
             Console.WriteLine("\nConjunto atual:");
             foreach (var item in set)
-            {
                 Console.WriteLine($"{item.Key}: {item.Value}");
-            }
 
             // Menu de opções
             Console.WriteLine("\nEscolha a técnica de substituição:");
