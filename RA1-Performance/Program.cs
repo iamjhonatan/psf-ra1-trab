@@ -1,34 +1,29 @@
 ﻿
 using RA1_Performance;
 
+string? typeOfMapping;
+
 Console.WriteLine("\n -- Conectividade em Sistemas Ciberfísicos- Mapeamento Direto -- \n");
+Thread.Sleep(2000);
+Console.WriteLine("Digite o tipo de mapeamento: \n");
+Console.WriteLine("1- Mapeamento Direto \n2- Mapeamento Associativo \n3- Mapeamento Associativo por Conjunto");
 
-var hits = 0;
-var misses = 0;
-var counter = 0;
-
-Console.WriteLine("Digite o tamanho da cache: ");
-var cacheSizeFromUser = Console.ReadLine();
+typeOfMapping = Console.ReadLine();
 Console.WriteLine("");
 
-while(!Functions.IsValidNumber(cacheSizeFromUser))
+if (Functions.IsValidNumber(typeOfMapping))
 {
-    Console.WriteLine("O valor não pode ser nulo, vazio ou conter letras.");
-    Console.WriteLine("Digite o tamanho da cache: ");
-    cacheSizeFromUser = Console.ReadLine();
+    var typeConvertedFromUser = int.Parse(typeOfMapping);
+    switch (typeConvertedFromUser)
+    {
+        case 1:
+            DirectMapping.Main();
+            break;
+        case 2:
+            LRUCache.Main();
+            break;
+        case 3:
+            //AssociativeMappingBySet.Main();
+            break;
+    }
 }
-
-var valueConvertedFromUser = int.Parse(cacheSizeFromUser);
-
-Console.WriteLine("====================================");
-Console.WriteLine("Cache inicial: ");
-var cache = Functions.CreateCache(valueConvertedFromUser);
-Functions.PrintCache(cache);
-
-//var listNumbers = new List<int> {0, 1, 2, 3, 1, 4, 5, 6}; // TODO: remover hard code
-var listNumbers = new List<int> {33, 3, 11, 5};
-
-Functions.DirectMapping(valueConvertedFromUser, listNumbers);
-
-
-Functions.Informations(listNumbers, hits, misses);

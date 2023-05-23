@@ -2,7 +2,7 @@ namespace RA1_Performance;
 
 public class AssociativeMapping
 {
-    static void Main() {
+    public static void Main() {
         var stack = new Stack<string>();
         
         stack.Push("Elemento 1");
